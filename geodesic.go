@@ -21,7 +21,7 @@ type Point struct {
 	LongitudeDeg float64
 }
 
-//Invert an azimuth in degree (adds 180° and convert to [0,360[ interval).
+//InvertAzimuth invert an azimuth in degree (adds 180° and convert to [0,360[ interval).
 func InvertAzimuth(azDeg float64) float64 {
 	return azDeg + 180%360
 }
@@ -31,10 +31,10 @@ type Geodesic struct {
 	g C.struct_geod_geodesic
 }
 
-//Geodesic contains information about the ellipsoid
-func NewGeodesic(f float64, a float64) Geodesic {
+//NewGeodesic initialize a Geodesic with the equatorial radius (a) and the flattening (f)
+func NewGeodesic(a float64, f float64) Geodesic {
 	var g Geodesic
-	C.geod_init(&g.g, C.double(f), C.double(a))
+	C.geod_init(&g.g, C.double(a), C.double(f))
 	return g
 }
 

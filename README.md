@@ -18,15 +18,19 @@ The original library (MIT licensed) can be found at http://geographiclib.sourcef
 `go test` is used for testing.
 
 Run partial test suite:
+
 	go test github.com/xeonx/geodesic -short
 	
 Run full test suite:
+
 	go test github.com/xeonx/geodesic
 	
 Run full test suite, with given error thresholds:
+
 	go test github.com/xeonx/geodesic -deltaPos=5e-8 -deltaAz=0.02 -deltaS=1e-7
 	
 Run benchmarks:
+
 	go test github.com/xeonx/geodesic -short -bench .
 
 ## License

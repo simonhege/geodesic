@@ -7,16 +7,16 @@ package geodesic
 import (
 	"bufio"
 	"compress/gzip"
-	"fmt"
 	"flag"
+	"fmt"
 	"math"
 	"os"
 	"testing"
 )
 
 var (
-	deltaAz = flag.Float64("deltaAz", 1e-2, "Maximum delta allowed on azimuths (degree)")
-	deltaS = flag.Float64("deltaS", 1e-7, "Maximum delta allowed on distances (m)")
+	deltaAz  = flag.Float64("deltaAz", 1e-2, "Maximum delta allowed on azimuths (degree)")
+	deltaS   = flag.Float64("deltaS", 1e-7, "Maximum delta allowed on distances (m)")
 	deltaPos = flag.Float64("deltaPos", 1e-8, "Maximum delta allowed on latitudes or longitudes (degree)")
 )
 
@@ -41,7 +41,7 @@ var testData = []d{}
 
 func TestMain(m *testing.M) {
 	flag.Parse()
-	
+
 	filepath := "testdata/GeodTest.dat.gz"
 	if testing.Short() {
 		filepath = "testdata/GeodTest-short.dat.gz"
@@ -49,7 +49,7 @@ func TestMain(m *testing.M) {
 
 	//Load test data file
 	file, err := os.Open(filepath)
-	
+
 	if err != nil {
 		panic(err)
 	}
