@@ -1,0 +1,1 @@
+These test data were downloaded from http://geographiclib.sourceforge.net/html/geodesic.html#testgeod
