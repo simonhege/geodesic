@@ -12,6 +12,8 @@ import (
 	"math"
 	"os"
 	"testing"
+
+	"github.com/xeonx/geographic"
 )
 
 var (
@@ -80,7 +82,7 @@ func TestDirect(t *testing.T) {
 
 	for i, tt := range testData {
 
-		outPt2, outAz2 := WGS84.Direct(Point{tt.lat1, tt.lon1}, tt.azi1, tt.s12)
+		outPt2, outAz2 := WGS84.Direct(geographic.Point{tt.lat1, tt.lon1}, tt.azi1, tt.s12)
 
 		if !approxEq(outPt2.LatitudeDeg, tt.lat2, *deltaPos) {
 			t.Errorf("%d: Direct(%v, %v, %v).LatitudeDeg => %v, want %v", i, tt.lat1, tt.lon1, tt.azi1, outPt2.LatitudeDeg, tt.lat2)
@@ -97,7 +99,7 @@ func TestDirect(t *testing.T) {
 func BenchmarkDirect(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		tt := testData[i%len(testData)]
-		WGS84.Direct(Point{tt.lat1, tt.lon1}, tt.azi1, tt.s12)
+		WGS84.Direct(geographic.Point{tt.lat1, tt.lon1}, tt.azi1, tt.s12)
 	}
 }
 
@@ -105,7 +107,7 @@ func TestInverse(t *testing.T) {
 
 	for i, tt := range testData {
 
-		outS12, outAz1, outAz2 := WGS84.Inverse(Point{tt.lat1, tt.lon1}, Point{tt.lat2, tt.lon2})
+		outS12, outAz1, outAz2 := WGS84.Inverse(geographic.Point{tt.lat1, tt.lon1}, geographic.Point{tt.lat2, tt.lon2})
 
 		if !approxEq(outS12, tt.s12, *deltaS) {
 			t.Errorf("%d: Inverse(%v, %v, %v, %v).s12 => %v, want %v", i, tt.lat1, tt.lon1, tt.lat2, tt.lon2, outS12, tt.s12)
@@ -121,6 +123,6 @@ func TestInverse(t *testing.T) {
 func BenchmarkInverse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		tt := testData[i%len(testData)]
-		WGS84.Inverse(Point{tt.lat1, tt.lon1}, Point{tt.lat2, tt.lon2})
+		WGS84.Inverse(geographic.Point{tt.lat1, tt.lon1}, geographic.Point{tt.lat2, tt.lon2})
 	}
 }

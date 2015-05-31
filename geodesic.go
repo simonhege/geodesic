@@ -15,11 +15,9 @@ package geodesic
 // #include "geodesic.h"
 import "C"
 
-//Point represents a location on earth
-type Point struct {
-	LatitudeDeg  float64
-	LongitudeDeg float64
-}
+import (
+	"github.com/xeonx/geographic"
+)
 
 //InvertAzimuth invert an azimuth in degree (adds 180° and convert to [0,360[ interval).
 func InvertAzimuth(azDeg float64) float64 {
@@ -44,7 +42,7 @@ var WGS84 = NewGeodesic(6378137, 1/298.257223563)
 //Direct computes the point pt2 obtained from pt1 at a distance s12 (in meters) in
 //direction of az1 (in degrees, clockwise from north). The returned azimuth az2 is the
 //azimuth of the geodesic at pt2 (in degrees).
-func (g Geodesic) Direct(pt1 Point, az1 float64, s12 float64) (pt2 Point, az2 float64) {
+func (g Geodesic) Direct(pt1 geographic.Point, az1 float64, s12 float64) (pt2 geographic.Point, az2 float64) {
 
 	var resLat, resLon, resAz C.double
 
@@ -67,7 +65,7 @@ func (g Geodesic) Direct(pt1 Point, az1 float64, s12 float64) (pt2 Point, az2 fl
 
 //Inverse computes the azimuths (in degrees, clockwise from north) and the distance (in meters) between two points.
 //Azimuths are from one point to the other.
-func (g *Geodesic) Inverse(pt1 Point, pt2 Point) (s12, az1, az2 float64) {
+func (g *Geodesic) Inverse(pt1 geographic.Point, pt2 geographic.Point) (s12, az1, az2 float64) {
 
 	var resS12, resAz1, resAz2 C.double
 
@@ -94,7 +92,7 @@ type GeodesicLine struct {
 }
 
 //NewGeodesicLine initialize a GeodesicLine.
-func NewGeodesicLine(g Geodesic, origin Point, azDeg float64) GeodesicLine {
+func NewGeodesicLine(g Geodesic, origin geographic.Point, azDeg float64) GeodesicLine {
 	var l GeodesicLine
 	C.geod_lineinit(&l.gl, &g.g, C.double(origin.LatitudeDeg), C.double(origin.LongitudeDeg), C.double(azDeg), 0)
 	return l
@@ -104,7 +102,7 @@ func NewGeodesicLine(g Geodesic, origin Point, azDeg float64) GeodesicLine {
 //It is faster than multiple calls to Direct.
 //Azimuths is the azimuth of the geodesic line at the resulting point. For short positive distance it
 //will be approximately equal to the GeodesicLine azimuth at origin.
-func (l GeodesicLine) Position(s12 float64) (pt Point, azDeg float64) {
+func (l GeodesicLine) Position(s12 float64) (pt geographic.Point, azDeg float64) {
 
 	var resLat, resLon, resAzDeg C.double
 
